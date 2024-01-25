@@ -3,4 +3,7 @@
 counter=0
 while ((counter++<10)); do
     echo "Best School"
-donee
+    if [[ $counter -eq 9 ]]; then
+        echo "Hi";
+    fi
+done
