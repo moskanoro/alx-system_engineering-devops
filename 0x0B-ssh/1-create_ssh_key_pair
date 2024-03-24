@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# a script that creates an RSA key pair
-ssh-keygen -b 4096 -t rsa -N "betty" -f "school"
-# Reminder N flag is for new passphrase
-# AND -P stands for old one
+# Bash script that creates an RSA key pair
+#ssh-keygen -b 4096 -P betty -f school
+ssh-keygen -t rsa -b 4096 -P betty -f school 
