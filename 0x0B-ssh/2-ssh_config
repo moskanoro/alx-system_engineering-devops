@@ -1,0 +1,6 @@
+# SSH configuration 
+Host  My server 54.234.74.28
+    HostName 54.234.74.28
+    User ubuntu
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
