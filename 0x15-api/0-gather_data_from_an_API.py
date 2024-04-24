@@ -4,10 +4,13 @@ A Script that, uses this REST API, for a given employee ID, returns
 information about his/her TODO list progress
 """
 
+import json
 import requests
 from sys import argv
 
+
 if __name__ == "__main__":
+
     sessionReq = requests.Session()
 
     idEmp = argv[1]
@@ -20,10 +23,14 @@ if __name__ == "__main__":
     json_req = employee.json()
     name = employeeName.json()['name']
 
-    totalTasks = sum(1 for task in json_req)
-    doneTasks = sum(1 for task in json_req if task['completed'])
+    totalTasks = 0
 
-    print("Employee {} is done with tasks({}/{}):".format(name, doneTasks, totalTasks))
+    for done_tasks in json_req:
+        if done_tasks['completed']:
+            totalTasks += 1
+
+    print("Employee {} is done with tasks({}/{}):".
+          format(name, totalTasks, len(json_req)))
 
     for done_tasks in json_req:
         if done_tasks['completed']:
