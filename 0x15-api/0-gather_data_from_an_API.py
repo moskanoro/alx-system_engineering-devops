@@ -1,33 +1,30 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 """
- Gather data from an API
+A Script that, uses this REST API, for a given employee ID, returns
+information about his/her TODO list progress
 """
-from requests import get
+
+import requests
 from sys import argv
 
-if __name__ == '__main__':
-    if len(argv) != 2:
-        print("Usage: python script.py <user_id>")
-        exit(1)
+if __name__ == "__main__":
+    sessionReq = requests.Session()
 
-    user_id = argv[1]
-    try:
-        url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
-        response = get(url)
-        response.raise_for_status()  # Raise an exception for bad responses
-        name = response.json().get('name')
+    idEmp = argv[1]
+    idURL = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(idEmp)
+    nameURL = 'https://jsonplaceholder.typicode.com/users/{}'.format(idEmp)
 
-        url = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(user_id)
-        response = get(url)
-        response.raise_for_status()
-        tasks = response.json()
-        done_tasks = [task for task in tasks if task.get('completed')]
-        done = len(done_tasks)
+    employee = sessionReq.get(idURL)
+    employeeName = sessionReq.get(nameURL)
 
-        print("Employee {} is done with tasks({}/{}):"
-              .format(name, done, len(tasks)))
-        for task in done_tasks:
-            print("\t{}".format(task.get('title')))
-    except Exception as e:
-        print("An error occurred:", e)
+    json_req = employee.json()
+    name = employeeName.json()['name']
+
+    totalTasks = sum(1 for task in json_req)
+    doneTasks = sum(1 for task in json_req if task['completed'])
+
+    print("Employee {} is done with tasks({}/{}):".format(name, doneTasks, totalTasks))
+
+    for done_tasks in json_req:
+        if done_tasks['completed']:
+            print("\t " + done_tasks.get('title'))
