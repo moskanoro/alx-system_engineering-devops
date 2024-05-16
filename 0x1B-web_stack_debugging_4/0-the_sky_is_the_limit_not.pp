@@ -1,4 +1,4 @@
-s manuscript increases the amount of traffic an Nginx server can handle
+# This manuscript increases the amount of traffic an Nginx server can handle
 
 # Increase the ULIMIT of the default file
 file { 'fix-for-nginx':
@@ -8,7 +8,9 @@ file { 'fix-for-nginx':
 }
 
 # Restart Nginx
--> exec { 'nginx-restart':
-  command => 'nginx restart',
-  path    => '/etc/init.d/',
+exec { 'nginx-restart':
+  command => '/etc/init.d/nginx restart',
+  path    => ['/usr/bin', '/usr/sbin'],
+  require => File['fix-for-nginx'],
 }
+
